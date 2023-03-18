@@ -71,6 +71,7 @@ io.on("connection", (socket) => {
   levels[sessionId] = 0;
   socket.on("private message", async (msg) => {
     let userMessage = configureMesage(msg);
+    console.log(userMessage);
     const number = parseInt(msg);
     io.to(sessionId).emit("user message", userMessage);
     let botMessage = "";

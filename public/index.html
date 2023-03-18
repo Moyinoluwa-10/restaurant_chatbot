@@ -20,32 +20,23 @@
     ></script>
   </head>
   <body>
-    <div class="chat-bar-collapsible chat-container">
-      <div class="chat-header collapsible">
-        Chat with us!
-        <i
-          id="chat-icon"
-          style="color: #fff"
-          class="fa fa-fw fa-comments-o"
-        ></i>
+    <div class="chat-container">
+      <div class="chat-header">
+        Restaurant Chatbot
+        <i class="fa-brands fa-bots icon"></i>
       </div>
 
       <div class="chat-body">
-        <div class="outer-container">
-          <div class="chat-block">
-            <!-- Messages -->
-            <div id="chatbox">
-              <h5 class="chat-timestamp"></h5>
-              <p id="bot-starter-message" class="bot-message">
-                <span>Loading...</span>
-              </p>
-            </div>
-            <div class="loading hidden">
-              <div class="circle circle--1"></div>
-              <div class="circle circle--2"></div>
-              <div class="circle circle--3"></div>
-            </div>
-          </div>
+        <div class="chat-block" id="chat-block">
+          <h5 class="chat-timestamp"></h5>
+          <p id="bot-starter-message" class="bot-message">
+            <span>Loading...</span>
+          </p>
+        </div>
+        <div class="loading hidden">
+          <div class="circle circle--1"></div>
+          <div class="circle circle--2"></div>
+          <div class="circle circle--3"></div>
         </div>
       </div>
 
@@ -66,21 +57,14 @@
           </div>
         </form>
       </div>
-
-      <!-- <div id="chat-bar-bottom">
-        <p></p>
-      </div> -->
     </div>
 
-    <!-- <script
+    <script
       src="https://cdn.socket.io/4.6.0/socket.io.min.js"
       integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
       crossorigin="anonymous"
-    ></script> -->
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/index.js"></script>
-    <script src="scripts/responses.js"></script>
-    <script src="scripts/socket.js"></script>
   </body>
 </html>

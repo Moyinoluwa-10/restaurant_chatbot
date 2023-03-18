@@ -2,7 +2,7 @@
 const formEl = document.querySelector(".form");
 const inputEl = document.querySelector(".form-input");
 const loadingEl = document.querySelector(".loading");
-const chatBody = document.querySelector(".outer-container");
+const chatBody = document.querySelector(".chat-body");
 
 // send message on form submit
 formEl.addEventListener("submit", (e) => {
@@ -53,19 +53,7 @@ function createBotMessage(msg) {
   const spanEl = document.createElement("span");
   spanEl.innerHTML = msg;
   messageEl.append(spanEl);
-  document.getElementById("chatbox").append(messageEl);
-  setScrollPosition();
-}
-
-function createBotMessage2(msg) {
-  // let botResponse = getBotResponse(userText);
-  const messageEl = document.createElement("p");
-  messageEl.classList.add("bot-message");
-  const spanEl = document.createElement("span");
-  spanEl.textContent = msg;
-  spanEl.innerHTML = msg.replace(/\n/g, "<br>");
-  messageEl.append(spanEl);
-  document.getElementById("chatbox").append(messageEl);
+  document.getElementById("chat-block").append(messageEl);
   setScrollPosition();
 }
 
@@ -78,7 +66,7 @@ function createUserMessage(msg) {
   messageEl.append(spanEl);
 
   inputEl.value = "";
-  document.getElementById("chatbox").append(messageEl);
+  document.getElementById("chat-block").append(messageEl);
   setScrollPosition();
 }
 
@@ -108,6 +96,7 @@ socket.on("chat message", (data) => {
 });
 
 socket.on("bot message", (data) => {
+  // loadingEl.classList.remove("hidden");
   console.log(data);
   if (Array.isArray(data.msg)) {
     let msg = data.msg
@@ -119,9 +108,11 @@ socket.on("bot message", (data) => {
     data.msg = data.msg;
   }
   createBotMessage(data.msg);
+  // loadingEl.classList.add("hidden");
 });
 
 socket.on("user message", (data) => {
+  console.log(data);
   // console.log(data);
   createUserMessage(data.msg);
 });

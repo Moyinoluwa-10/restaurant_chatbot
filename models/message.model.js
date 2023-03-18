@@ -9,12 +9,12 @@ const MessageSchema = new mongoose.Schema(
     },
     userMessage: {
       username: String,
-      text: String,
+      msg: String,
       time: String,
     },
     botMessage: {
       username: String,
-      text: String,
+      msg: String,
       time: String,
     },
   },
