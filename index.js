@@ -16,7 +16,7 @@ const {
   saveOrder,
 } = require("./controllers/chat.controller");
 const { connectToMongoDB } = require("./database/db");
-const messageModel = require("./models/message.model");
+const messageModel = require("./models/chat.model");
 // const configureMesage = require("./utils/message");
 const { BOTNAME } = require("./config/config");
 const { menus, food } = require("./utilities/options");
@@ -65,15 +65,11 @@ io.on("connection", (socket) => {
     msg: "Welcome to the chat app, say hello to the bot",
   });
 
-  // io.to(sessionId).emit("second-message", menus);
-  // io.to(sessionId).emit("second-message", food);
-
   levels[sessionId] = 0;
-  socket.on("private message", async (msg) => {
+  socket.on("chat-message", async (msg) => {
     let userMessage = configureMesage(msg);
-    console.log(userMessage);
     const number = parseInt(msg);
-    io.to(sessionId).emit("user message", userMessage);
+    io.to(sessionId).emit("user-message", userMessage);
     let botMessage = "";
 
     switch (levels[sessionId]) {
@@ -101,7 +97,7 @@ io.on("connection", (socket) => {
           botMessage = await configureMesage(
             "Invalid Input. Enter 1 or 99 or 98 or 97 or 0"
           );
-          io.to(sessionId).emit("bot message", botMessage);
+          io.to(sessionId).emit("bot-message", botMessage);
         }
         levels[sessionId] = 1;
         break;
@@ -116,7 +112,7 @@ io.on("connection", (socket) => {
           botMessage = await configureMesage(
             "Invalid Input. Enter 1 or 2 or 3 or 4 or 5"
           );
-          io.to(sessionId).emit("bot message", botMessage);
+          io.to(sessionId).emit("bot-message", botMessage);
           levels[sessionId] = 2;
           return;
         } else {

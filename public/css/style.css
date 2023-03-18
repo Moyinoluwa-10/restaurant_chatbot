@@ -72,14 +72,11 @@ body {
 
 .chat-block {
   width: 100%;
-  /* height: 100%; */
   scroll-behavior: smooth;
   hyphens: auto;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* overflow: hidden; */
-  /* overflow-y: scroll; */
 }
 
 .chat-timestamp {
@@ -92,32 +89,45 @@ body {
   color: white;
   margin-bottom: 10px;
   align-self: flex-end;
-}
-
-.user-message span {
-  display: inline-block;
   border-radius: 8px;
   border-bottom-right-radius: 2px;
   padding: 10px;
   background: #5ca6fa;
   transform: translateX(50%);
   animation: fade-in-right 0.5s forwards;
+  max-width: 80%;
+}
+
+.user-message span {
+  display: block;
+}
+
+.user-message small {
+  display: block;
+  text-align: right;
+  color: #eaeaea;
 }
 
 .bot-message {
   color: #000;
   margin-bottom: 10px;
   align-self: flex-start;
-}
-
-.bot-message span {
-  display: inline-block;
   background: #e0e0e0;
   padding: 10px;
   border-radius: 8px;
   border-bottom-left-radius: 2px;
   transform: translate(-50%);
   animation: fade-in-left 0.5s both;
+}
+
+.bot-message span {
+  display: block;
+}
+
+.bot-message small {
+  display: block;
+  text-align: right;
+  color: #383838;
 }
 
 .chat-footer {

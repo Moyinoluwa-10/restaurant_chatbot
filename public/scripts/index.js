@@ -7,9 +7,9 @@ const chatBody = document.querySelector(".chat-body");
 // send message on form submit
 formEl.addEventListener("submit", (e) => {
   e.preventDefault();
-  socket.emit("chat message", inputEl.value);
-  socket.emit("private message", inputEl.value);
+  socket.emit("chat-message", inputEl.value);
   inputEl.value = "";
+  inputEl.focus();
 });
 inputEl.focus();
 
@@ -45,27 +45,30 @@ function firstBotMessage(msg) {
 
 // firstBotMessage();
 
-// retrieves the response
-function createBotMessage(msg) {
-  // let botResponse = getBotResponse(userText);
+// creates a bot message
+function createBotMessage(data) {
   const messageEl = document.createElement("p");
   messageEl.classList.add("bot-message");
   const spanEl = document.createElement("span");
-  spanEl.innerHTML = msg;
+  spanEl.innerHTML = data.msg;
+  const smallEl = document.createElement("small");
+  smallEl.textContent = data.time;
   messageEl.append(spanEl);
+  messageEl.append(smallEl);
   document.getElementById("chat-block").append(messageEl);
   setScrollPosition();
 }
 
-// gets the msg from the inputEl box and processes it
-function createUserMessage(msg) {
+// creates a user message
+function createUserMessage(data) {
   const messageEl = document.createElement("p");
   messageEl.classList.add("user-message");
   const spanEl = document.createElement("span");
-  spanEl.textContent = msg;
+  spanEl.textContent = data.msg;
+  const smallEl = document.createElement("small");
+  smallEl.textContent = data.time;
   messageEl.append(spanEl);
-
-  inputEl.value = "";
+  messageEl.append(smallEl);
   document.getElementById("chat-block").append(messageEl);
   setScrollPosition();
 }
@@ -95,27 +98,12 @@ socket.on("chat message", (data) => {
   }
 });
 
-socket.on("bot message", (data) => {
-  // loadingEl.classList.remove("hidden");
+socket.on("bot-message", (data) => {
   console.log(data);
-  if (Array.isArray(data.msg)) {
-    let msg = data.msg
-      .map((item) => `${item.number}: To ${item.text}`)
-      .join(`<br>`);
-    msg = "Please select a number from the list below: <br>" + msg;
-    data.msg = msg;
-  } else {
-    data.msg = data.msg;
-  }
-  createBotMessage(data.msg);
-  // loadingEl.classList.add("hidden");
+  createBotMessage(data);
 });
 
-socket.on("user message", (data) => {
+socket.on("user-message", (data) => {
   console.log(data);
-  // console.log(data);
-  createUserMessage(data.msg);
+  createUserMessage(data);
 });
-
-// createBotMessage("hello world<br/>Hello world");
-// createBotMessage2(`hello world\nHello world`);

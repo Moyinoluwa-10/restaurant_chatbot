@@ -1,24 +1,23 @@
 const mongoose = require("mongoose");
 
-const MessageSchema = new mongoose.Schema(
+const ChatSchema = new mongoose.Schema(
   {
     sessionID: {
       type: String,
-      required: [true, "Enter a Session ID"],
+      required: [true, "SessionID is missing"],
       trim: true,
     },
     userMessage: {
-      username: String,
       msg: String,
       time: String,
     },
     botMessage: {
-      username: String,
       msg: String,
       time: String,
     },
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Message", MessageSchema);
+
+module.exports = mongoose.model("Chat", ChatSchema);
 
