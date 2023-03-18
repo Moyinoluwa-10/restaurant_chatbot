@@ -25,7 +25,7 @@ const loadMessage = async (io, sessionID) => {
   if (!messages) return;
 
   messages.forEach((message) => {
-    io.to(message.sessionID).emit("user message", message.userMessage);
+    io.to(message.sessionID).emit("user-message", message.userMessage);
     io.to(message.sessionID).emit("bot-message", message.botMessage);
   });
 };

@@ -18,7 +18,7 @@ const {
 const { connectToMongoDB } = require("./database/db");
 const messageModel = require("./models/chat.model");
 // const configureMesage = require("./utils/message");
-const { BOTNAME } = require("./config/config");
+const { BOTNAME, PORT } = require("./config/config");
 const { menus, food } = require("./utilities/options");
 const { configureMesage } = require("./utilities/configureOptions");
 
@@ -41,54 +41,55 @@ const io = new Server(server, {
 app.use(session);
 io.engine.use(session);
 
-const levels = {};
+const progress = {};
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
-
   // get the session id from the socket
   const session = socket.request.session;
   const sessionId = session.id;
+
+  // create a new session
   createSession(sessionId);
 
-  console.log(sessionId);
-  // console.log(socket.request.session);
+  console.log("a user connected,", sessionId);
 
-  //the socket.id changes every time the user refreshes the page, so we use the session id to identify the user and create a room for them
+  // join the user to the room for that user only
   socket.join(sessionId);
 
+  // load previous messages of a user
   loadMessage(io, sessionId);
 
-  //welcome the user
-  io.to(sessionId).emit("first-message", {
-    sender: "bot",
-    msg: "Welcome to the chat app, say hello to the bot",
-  });
+  // welcome the user
+  let firstMessage = "Welcome to the Jitters Restaurant, How can I help you?";
+  io.to(sessionId).emit("first-message", configureMesage(firstMessage));
 
-  levels[sessionId] = 0;
+  // progress is used to track the user's progress in the chatbot
+  progress[sessionId] = 0;
+
+  // listen for user message
   socket.on("chat-message", async (msg) => {
     let userMessage = configureMesage(msg);
-    const number = parseInt(msg);
     io.to(sessionId).emit("user-message", userMessage);
+    const number = parseInt(msg);
     let botMessage = "";
 
-    switch (levels[sessionId]) {
+    switch (progress[sessionId]) {
       case 0:
         console.log("hello");
         botMessage = await mainMenus(io, sessionId);
-        levels[sessionId] = 1;
+        progress[sessionId] = 1;
         break;
       case 1:
         if (number === 1) {
           botMessage = await menu(io, sessionId);
-          levels[sessionId] = 2;
+          progress[sessionId] = 2;
           return;
         } else if (number === 99) {
           botMessage = await checkOutOrder(io, sessionId);
-          levels[sessionId] = 1;
+          progress[sessionId] = 1;
         } else if (number === 98) {
           botMessage = await orderHistory(io, sessionId);
-          levels[sessionId] = 1;
+          progress[sessionId] = 1;
         } else if (number === 97) {
           botMessage = await currentOrder(io, sessionId);
         } else if (number === 0) {
@@ -99,7 +100,7 @@ io.on("connection", (socket) => {
           );
           io.to(sessionId).emit("bot-message", botMessage);
         }
-        levels[sessionId] = 1;
+        progress[sessionId] = 1;
         break;
       case 2:
         if (
@@ -113,11 +114,11 @@ io.on("connection", (socket) => {
             "Invalid Input. Enter 1 or 2 or 3 or 4 or 5"
           );
           io.to(sessionId).emit("bot-message", botMessage);
-          levels[sessionId] = 2;
+          progress[sessionId] = 2;
           return;
         } else {
           botMessage = await saveOrder(io, sessionId, number);
-          levels[sessionId] = 1;
+          progress[sessionId] = 1;
         }
         break;
     }
@@ -130,9 +131,10 @@ io.on("connection", (socket) => {
   });
 });
 
+// connect to the database
 connectToMongoDB();
 
-//starting the server
-server.listen(4000, () => {
-  console.log("listening on *:4000");
+// start the server
+server.listen(PORT, () => {
+  console.log(`listening on *${PORT}`);
 });

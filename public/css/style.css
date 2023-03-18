@@ -27,7 +27,7 @@ body {
 
 .chat-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   height: 100%;
   max-height: 600px;
   border-radius: 10px;
@@ -118,6 +118,7 @@ body {
   border-bottom-left-radius: 2px;
   transform: translate(-50%);
   animation: fade-in-left 0.5s both;
+  max-width: 80%;
 }
 
 .bot-message span {

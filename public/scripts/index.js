@@ -3,6 +3,7 @@ const formEl = document.querySelector(".form");
 const inputEl = document.querySelector(".form-input");
 const loadingEl = document.querySelector(".loading");
 const chatBody = document.querySelector(".chat-body");
+const socket = io();
 
 // send message on form submit
 formEl.addEventListener("submit", (e) => {
@@ -31,19 +32,17 @@ function getTime() {
   return time;
 }
 
-// load first message on page load
-function firstBotMessage(msg) {
+// load the first bot message on page load
+function firstBotMessage(data) {
   let time = getTime();
   document.querySelector(".chat-timestamp").textContent = time;
 
   // let firstMessage = "Hey there, Welcome to Iya Sikira Joint";
   document.getElementById("bot-starter-message").innerHTML =
-    "<span>" + msg + "</span>";
+    "<span>" + data.msg + "</span><small>" + data.time + "</small>";
 
   formEl.scrollIntoView(false);
 }
-
-// firstBotMessage();
 
 // creates a bot message
 function createBotMessage(data) {
@@ -79,23 +78,8 @@ const setScrollPosition = () => {
   }
 };
 
-const socket = io();
 socket.on("first-message", (data) => {
-  firstBotMessage(data.msg);
-});
-
-socket.on("second-message", (data) => {
-  console.log(data);
-  createBotMessage(data);
-});
-
-socket.on("chat message", (data) => {
-  // console.log(data);
-  if (data.sender === "bot") {
-    createBotMessage(data.message);
-  } else {
-    createUserMessage(data.message);
-  }
+  firstBotMessage(data);
 });
 
 socket.on("bot-message", (data) => {
