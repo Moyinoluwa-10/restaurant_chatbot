@@ -81,11 +81,11 @@ const orderHistory = async (io, sessionID) => {
   let botMessage = "";
 
   if (sessionOrder.placedOrder.length < 1) {
-    botMessage = configureMesage("You do not have any order history yet");
+    botMessage = configureMesage("There is no order history yet");
     io.to(sessionID).emit("bot-message", botMessage);
   } else {
     botMessage = configureMesage(
-      configureReplies("Your Order History", sessionOrder.placedOrder)
+      configureReplies("Here is the order history:", sessionOrder.placedOrder)
     );
     io.to(sessionID).emit("bot-message", botMessage);
   }
@@ -100,7 +100,9 @@ const currentOrder = async (io, sessionID) => {
   let botMessage = "";
 
   if (sessionOrder.currentOrder.length < 1) {
-    botMessage = configureMesage("You do not have any order yet");
+    botMessage = configureMesage(
+      "You don't have any items in your current order yet."
+    );
     io.to(sessionID).emit("bot-message", botMessage);
   } else {
     botMessage = configureMesage(
@@ -121,11 +123,11 @@ const cancelOrder = async (io, sessionID) => {
   let botMessage = "";
 
   if (sessionOrder.currentOrder.length < 1) {
-    botMessage = configureMesage("You do not have any order yet");
+    botMessage = configureMesage("There is nothing to cancel.");
 
     io.to(sessionID).emit("bot-message", botMessage);
   } else {
-    botMessage = configureMesage("Order Cancelled");
+    botMessage = configureMesage("Your order has been cancelled.");
 
     sessionOrder.currentOrder = [];
     await sessionOrder.save();
