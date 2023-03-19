@@ -7,14 +7,12 @@ const menuOptions = [
 ];
 
 const foodOptions = [
-  { option: 1, food: "Amala & Ewedu", price: 700 },
-  { option: 2, food: "Amala & Okro", price: 2500 },
-  { option: 3, food: "Amala & Efor", price: 800 },
-  { option: 4, food: "Iyan & Ewedu", price: 1400 },
-  { option: 4, food: "Iyan & Efor", price: 1400 },
-  { option: 4, food: "Iyan & Okra", price: 1400 },
-  { option: 4, food: "Iyan & Gbegiri", price: 1400 },
-  { option: 5, food: "Eba & Ewedu", price: 1000 },
+  { option: 1, food: "Yam & Egg", price: 2500 },
+  { option: 2, food: "Freshly baked croissant", price: 1200 },
+  { option: 3, food: "Burger", price: 1500 },
+  { option: 4, food: "Milkshake", price: 500 },
+  { option: 5, food: "Bagel", price: 800 },
+  { option: 6, food: "Salads", price: 800 },
 ];
 
 const menus =

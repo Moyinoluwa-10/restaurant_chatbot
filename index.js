@@ -17,9 +17,7 @@ const {
 } = require("./controllers/chat.controller");
 const { connectToMongoDB } = require("./database/db");
 const messageModel = require("./models/chat.model");
-// const configureMesage = require("./utils/message");
-const { BOTNAME, PORT } = require("./config/config");
-const { menus, food } = require("./utilities/options");
+const { PORT } = require("./config/config");
 const { configureMesage } = require("./utilities/configureOptions");
 
 const app = express();
@@ -27,7 +25,6 @@ const app = express();
 app.use(express.static("public"));
 
 const server = http.createServer(app);
-// const io = socket(server);
 const Server = socket.Server;
 const io = new Server(server, {
   cors: {
@@ -75,7 +72,6 @@ io.on("connection", (socket) => {
 
     switch (progress[sessionId]) {
       case 0:
-        console.log("hello");
         botMessage = await mainMenus(io, sessionId);
         progress[sessionId] = 1;
         break;
