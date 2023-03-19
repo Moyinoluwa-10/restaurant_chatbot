@@ -1,6 +1,6 @@
 const sessionModel = require("../models/session.model");
 const chatModel = require("../models/chat.model");
-const { menus, foodOptions } = require("../utilities/options");
+const { menu, foodOptions } = require("../utilities/options");
 const {
   configureMesage,
   configureReplies,
@@ -21,6 +21,7 @@ const createSession = async (sessionID) => {
 // load old messages of a user
 const loadMessage = async (io, sessionID) => {
   const messages = await chatModel.find({ sessionID });
+  // console.log(messages);
 
   if (!messages) return;
 
@@ -30,20 +31,15 @@ const loadMessage = async (io, sessionID) => {
   });
 };
 
-const welcomeMessage = (io, sessionID) => {
-  io.to(sessionID).emit(
-    "bot-message",
-    configureMesage("Welcome to Saheed's ChatBot! 🤖 <br> Say hello to the bot")
-  );
-};
-
-const mainMenus = (io, sessionID) => {
-  let botMessage = configureMesage(menus);
+// shows the options menu
+const optionsMenu = (io, sessionID) => {
+  let botMessage = configureMesage(menu);
   io.to(sessionID).emit("bot-message", botMessage);
   return botMessage;
 };
 
-const menu = (io, sessionID) => {
+// shows the food menu
+const foodMenu = async (io, sessionID) => {
   let botMessage = configureMesage(
     configureReplies("Select One Item To Add to Your Cart", foodOptions)
   );
@@ -66,11 +62,11 @@ const checkOutOrder = async (io, sessionID) => {
     sessionOrder.currentOrder = [];
     await sessionOrder.save();
 
-    botMessage = configureMesage("Order Placed");
+    botMessage = configureMesage("Your Order has been placed");
 
     io.to(sessionID).emit("bot-message", botMessage);
   }
-  io.to(sessionID).emit("bot-message", configureMesage(menus));
+  io.to(sessionID).emit("bot-message", configureMesage(menu));
 
   return botMessage;
 };
@@ -89,7 +85,7 @@ const orderHistory = async (io, sessionID) => {
     );
     io.to(sessionID).emit("bot-message", botMessage);
   }
-  io.to(sessionID).emit("bot-message", configureMesage(menus));
+  io.to(sessionID).emit("bot-message", configureMesage(menu));
 
   return botMessage;
 };
@@ -112,7 +108,7 @@ const currentOrder = async (io, sessionID) => {
     io.to(sessionID).emit("bot-message", botMessage);
   }
 
-  io.to(sessionID).emit("bot-message", configureMesage(menus));
+  io.to(sessionID).emit("bot-message", configureMesage(menu));
 
   return botMessage;
 };
@@ -135,7 +131,7 @@ const cancelOrder = async (io, sessionID) => {
     io.to(sessionID).emit("bot-message", botMessage);
   }
   //TODO: save the resposne to the database
-  io.to(sessionID).emit("bot-message", configureMesage(menus));
+  io.to(sessionID).emit("bot-message", configureMesage(menu));
 
   return botMessage;
 };
@@ -154,17 +150,16 @@ const saveOrder = async (io, sessionID, number) => {
   );
   io.to(sessionID).emit("bot-message", botMessage);
 
-  io.to(sessionID).emit("bot-message", configureMesage(menus));
+  io.to(sessionID).emit("bot-message", configureMesage(menu));
 
-  return;
+  return botMessage;
 };
 
 module.exports = {
   createSession,
   loadMessage,
-  welcomeMessage,
-  mainMenus,
-  menu,
+  optionsMenu,
+  foodMenu,
   checkOutOrder,
   orderHistory,
   currentOrder,

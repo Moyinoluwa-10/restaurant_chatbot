@@ -83,11 +83,11 @@ socket.on("first-message", (data) => {
 });
 
 socket.on("bot-message", (data) => {
-  console.log(data);
+  // console.log(data);
   createBotMessage(data);
 });
 
 socket.on("user-message", (data) => {
-  console.log(data);
+  // console.log(data);
   createUserMessage(data);
 });

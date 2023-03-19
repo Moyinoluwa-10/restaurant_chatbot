@@ -15,8 +15,8 @@ const foodOptions = [
   { option: 6, food: "Salads", price: 800 },
 ];
 
-const menus =
-  "Please select a number from the list below: <br /> <br />" +
+const menu =
+  "Select <br />" +
   menuOptions
     .map((option) => {
       return `${option.option}. ${option.value}`;
@@ -24,7 +24,7 @@ const menus =
     .join(`<br />`);
 
 module.exports = {
-  menus,
+  menu,
   foodOptions,
 };
 

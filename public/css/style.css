@@ -18,6 +18,7 @@ body {
   width: 100%;
   padding: 50px;
   height: 100vh;
+  max-height: 100vh;
   background: url(../assets/images/home-bg.jpg) no-repeat;
   background-size: cover;
   display: flex;

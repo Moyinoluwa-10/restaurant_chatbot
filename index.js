@@ -3,12 +3,11 @@ const socket = require("socket.io");
 const http = require("http");
 const { session } = require("./middlewares/session.middleware");
 const {
-  saveSessionID,
   createSession,
   loadMessage,
-  welcomeMessage,
-  mainMenus,
-  menu,
+  optionsMenu,
+
+  foodMenu,
   checkOutOrder,
   orderHistory,
   currentOrder,
@@ -57,7 +56,7 @@ io.on("connection", (socket) => {
   loadMessage(io, sessionId);
 
   // welcome the user
-  let firstMessage = "Welcome to the Jitters Restaurant, How can I help you?";
+  let firstMessage = "Welcome to the Jitters, How can I help you?";
   io.to(sessionId).emit("first-message", configureMesage(firstMessage));
 
   // progress is used to track the user's progress in the chatbot
@@ -72,12 +71,13 @@ io.on("connection", (socket) => {
 
     switch (progress[sessionId]) {
       case 0:
-        botMessage = await mainMenus(io, sessionId);
+        botMessage = await optionsMenu(io, sessionId);
         progress[sessionId] = 1;
         break;
       case 1:
         if (number === 1) {
-          botMessage = await menu(io, sessionId);
+          botMessage = await foodMenu(io, sessionId);
+          console.log(botMessage);
           progress[sessionId] = 2;
           return;
         } else if (number === 99) {
@@ -104,10 +104,11 @@ io.on("connection", (socket) => {
           number !== 2 &&
           number !== 3 &&
           number !== 4 &&
-          number !== 5
+          number !== 5 &&
+          number !== 6
         ) {
           botMessage = await configureMesage(
-            "Invalid Input. Enter 1 or 2 or 3 or 4 or 5"
+            "Invalid Input. Enter 1 or 2 or 3 or 4 or 5 or 6"
           );
           io.to(sessionId).emit("bot-message", botMessage);
           progress[sessionId] = 2;
