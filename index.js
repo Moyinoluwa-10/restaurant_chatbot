@@ -77,7 +77,6 @@ io.on("connection", (socket) => {
       case 1:
         if (number === 1) {
           botMessage = await foodMenu(io, sessionId);
-          console.log(botMessage);
           progress[sessionId] = 2;
           return;
         } else if (number === 99) {
