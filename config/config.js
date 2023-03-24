@@ -10,16 +10,10 @@ const MONGODB_URL =
   process.env.NODE_ENV === "test"
     ? process.env.TEST_MONGODB_URL
     : process.env.MONGODB_URL;
-
-const config = {
-  botName: process.env.botName,
-  PORT: process.env.PORT,
-  mongoURI: process.env.mongoURI,
-  sessionSecret: process.env.sessionSecret,
-  local_db: process.env.local_db,
-  db_name: process.env.db_name,
-  sessionMaxAge: process.env.sessionMaxAge,
-};
+const MONGODB_SESSION_URL =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_MONGODB_SESSION_URL
+    : process.env.MONGODB_SESSION_URL;
 
 module.exports = {
   PORT,
@@ -27,4 +21,5 @@ module.exports = {
   SESSION_SECRET,
   SESSION_MAXAGE,
   BOTNAME,
+  MONGODB_SESSION_URL,
 };
