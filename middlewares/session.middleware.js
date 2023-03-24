@@ -14,7 +14,7 @@ const store = new MongoDBStore({
   expires: maxAge,
 });
 
-// Catch errors
+// catch errors
 store.on("error", function (error) {
   console.log(error);
 });

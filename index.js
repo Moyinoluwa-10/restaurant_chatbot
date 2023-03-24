@@ -78,6 +78,12 @@ io.on("connection", (socket) => {
         if (number === 1) {
           botMessage = await foodMenu(io, sessionId);
           progress[sessionId] = 2;
+          const saveMessage = await new messageModel({
+            sessionID: sessionId,
+            userMessage,
+            botMessage,
+          });
+          await saveMessage.save();
           return;
         } else if (number === 99) {
           botMessage = await checkOutOrder(io, sessionId);
@@ -111,6 +117,12 @@ io.on("connection", (socket) => {
           );
           io.to(sessionId).emit("bot-message", botMessage);
           progress[sessionId] = 2;
+          const saveMessage = await new messageModel({
+            sessionID: sessionId,
+            userMessage,
+            botMessage,
+          });
+          await saveMessage.save();
           return;
         } else {
           botMessage = await saveOrder(io, sessionId, number);
@@ -118,12 +130,16 @@ io.on("connection", (socket) => {
         }
         break;
     }
-    const saveMessage = await new messageModel({
-      sessionID: sessionId,
-      userMessage,
-      botMessage,
-    });
-    await saveMessage.save();
+    try {
+      const saveMessage = await new messageModel({
+        sessionID: sessionId,
+        userMessage,
+        botMessage,
+      });
+      await saveMessage.save();
+    } catch (error) {
+      console.log(error);
+    }
   });
 });
 

@@ -21,7 +21,6 @@ const createSession = async (sessionID) => {
 // load old messages of a user
 const loadMessage = async (io, sessionID) => {
   const messages = await chatModel.find({ sessionID });
-  // console.log(messages);
 
   if (!messages) return;
 
@@ -47,6 +46,7 @@ const foodMenu = async (io, sessionID) => {
   return botMessage;
 };
 
+// check out order
 const checkOutOrder = async (io, sessionID) => {
   const sessionOrder = await sessionModel.findOne({ sessionID });
 
@@ -71,6 +71,7 @@ const checkOutOrder = async (io, sessionID) => {
   return botMessage;
 };
 
+// check order history
 const orderHistory = async (io, sessionID) => {
   const sessionOrder = await sessionModel.findOne({ sessionID });
 
@@ -90,6 +91,7 @@ const orderHistory = async (io, sessionID) => {
   return botMessage;
 };
 
+// check current order
 const currentOrder = async (io, sessionID) => {
   const sessionOrder = await sessionModel.findOne({ sessionID });
 
@@ -113,6 +115,7 @@ const currentOrder = async (io, sessionID) => {
   return botMessage;
 };
 
+// cancel current order
 const cancelOrder = async (io, sessionID) => {
   const sessionOrder = await sessionModel.findOne({ sessionID });
 
