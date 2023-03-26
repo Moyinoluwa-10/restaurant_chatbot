@@ -1,4 +1,7 @@
-const moment = require("moment");
+const time =
+  new Date().toLocaleTimeString().substring(0, 4) +
+  "" +
+  new Date().toLocaleTimeString().substring(7);
 
 const configureReplies = (msg, list) => {
   let arrayMsg = "";
@@ -16,7 +19,7 @@ const configureReplies = (msg, list) => {
 function configureMesage(msg) {
   return {
     msg,
-    time: moment().format("h:mm a"),
+    time,
   };
 }
 
